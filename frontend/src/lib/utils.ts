@@ -38,7 +38,7 @@ export function getCursorVariant(state: CursorState) {
   const variants = {
     idle: {
       scale: 1,
-      opacity: 0.8,
+      opacity: 1.0,
       blur: 0,
     },
     text: {

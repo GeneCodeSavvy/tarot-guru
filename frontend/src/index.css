@@ -152,3 +152,61 @@
 .perspective-1000 {
   perspective: 1000px;
 }
+
+/* Custom Cursor Styles (Desktop Only) */
+@media (pointer: fine) and (hover: hover) {
+  body.custom-cursor-active {
+    cursor: none !important;
+  }
+  
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+
+  /* Ensure buttons still show pointer context */
+  body.custom-cursor-active button,
+  body.custom-cursor-active a {
+    cursor: none !important;
+  }
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Restore default cursor if reduced motion is preferred */
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: auto !important;
+  }
+}
+
+/* Accessibility: High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .border-\[#d4af37\]\/30,
+  .border-\[#d4af37\]\/60 {
+    border-width: 2px;
+    border-color: #d4af37 !important;
+  }
+
+  /* Ensure text is always readable */
+  [data-text="true"] {
+    filter: none !important;
+  }
+}
+
+/* Performance: Optimize will-change for animated elements */
+.custom-cursor-active [data-card="true"]:hover {
+  will-change: transform, filter;
+}
+
+.custom-cursor-active [data-card="true"] {
+  will-change: auto;
+}

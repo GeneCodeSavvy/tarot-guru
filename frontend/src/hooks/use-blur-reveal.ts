@@ -7,7 +7,7 @@ interface UseBlurRevealOptions {
 }
 
 interface UseBlurRevealReturn {
-  ref: React.RefObject<HTMLElement>
+  ref: React.RefObject<HTMLElement | null>
   isVisible: boolean
   hasAnimated: boolean
 }
@@ -21,7 +21,7 @@ export function useBlurReveal({
   delay = 0,
   triggerOnce = true,
 }: UseBlurRevealOptions = {}): UseBlurRevealReturn {
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [hasAnimated, setHasAnimated] = useState(false)
 

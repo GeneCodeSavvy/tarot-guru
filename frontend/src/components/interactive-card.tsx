@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import type React from "react"
 import { useRef, useState } from "react"
+import { CardParticles } from "./effects/card-particles"
 
 interface InteractiveCardProps {
   imageSrc: string
@@ -61,21 +62,28 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
         y: isHovered ? -40 : 0,
         scale: isHovered ? 1.1 : 1,
         opacity: 1,
+        filter: isHovered
+          ? "drop-shadow(0 20px 40px rgba(212, 175, 55, 0.3))"
+          : "drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5))",
         transition: { type: "spring", stiffness: 300, damping: 20 },
       }}
       className={`absolute cursor-pointer transition-shadow duration-500 ${className}`}
+      data-card="true"
     >
+      {/* Existing glow effect */}
       <motion.div
         className="absolute inset-0 z-0 bg-primary/30 blur-[40px] rounded-2xl pointer-events-none"
         animate={{ opacity: isHovered ? 1 : 0 }}
       />
 
+      {/* Card content container */}
       <div
         className="relative z-10 w-full aspect-[2/3] rounded-2xl overflow-hidden border border-primary/20 shadow-2xl bg-black"
         style={{ transform: "translateZ(20px)" }}
       >
         <img src={imageSrc || "/placeholder.svg"} alt="Tarot Card" className="w-full h-full object-cover" />
 
+        {/* Existing shine effect */}
         <motion.div
           className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent pointer-events-none"
           style={{
@@ -83,6 +91,20 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
             opacity: isHovered ? 0.3 : 0,
           }}
         />
+
+        {/* Gold border glow on hover */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl border-2 pointer-events-none"
+          animate={{
+            borderColor: isHovered
+              ? "rgba(212, 175, 55, 0.6)"
+              : "rgba(212, 175, 55, 0)",
+          }}
+          transition={{ duration: 0.3 }}
+        />
+
+        {/* SVG Particle System */}
+        <CardParticles isActive={isHovered} count={12} />
       </div>
     </motion.div>
   )

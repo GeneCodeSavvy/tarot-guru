@@ -68,7 +68,6 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            initial={{ rotate: index * 5, x: index * 10, opacity: 0 }}
             animate={{
                 rotate: isHovered ? 0 : index * 8,
                 x: isHovered ? 0 : index * 30,

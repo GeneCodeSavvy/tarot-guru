@@ -9,6 +9,8 @@ interface InteractiveCardProps {
     index?: number
 }
 
+const HOVER_PADDING = 0 // pixels inside the card
+
 export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveCardProps) {
     const ref = useRef<HTMLDivElement>(null)
     const [isHovered, setIsHovered] = useState(false)
@@ -26,13 +28,25 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
         if (!ref.current) return
 
         const rect = ref.current.getBoundingClientRect()
-        const width = rect.width
-        const height = rect.height
         const mouseX = event.clientX - rect.left
         const mouseY = event.clientY - rect.top
 
-        const xPct = mouseX / width - 0.5
-        const yPct = mouseY / height - 0.5
+        const isInsideInnerArea =
+            mouseX > HOVER_PADDING &&
+            mouseX < rect.width - HOVER_PADDING &&
+            mouseY > HOVER_PADDING &&
+            mouseY < rect.height - HOVER_PADDING
+
+        setIsHovered(isInsideInnerArea)
+
+        if (!isInsideInnerArea) {
+            x.set(0)
+            y.set(0)
+            return
+        }
+
+        const xPct = mouseX / rect.width - 0.5
+        const yPct = mouseY / rect.height - 0.5
 
         x.set(xPct)
         y.set(yPct)
@@ -48,7 +62,6 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
         <motion.div
             ref={ref}
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={handleMouseLeave}
             style={{
                 rotateX,

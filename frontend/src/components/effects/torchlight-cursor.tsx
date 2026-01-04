@@ -90,66 +90,18 @@ export function TorchlightCursor({ children }: TorchlightCursorProps) {
                     mass: 0.5,
                 }}
             >
-                {/* The Seeker / Focus Ring */}
+                {/* Solid Circle Cursor */}
                 <motion.div
-                    className="relative w-5 h-5"
+                    className="w-5 h-5 rounded-full bg-[#d4af37]"
                     animate={{
-                        scale: state === 'idle' ? [1, 1.05, 1] : 1,
+                        scale: state === 'card' ? 1.2 : state === 'text' ? 0.8 : 1,
                     }}
                     transition={{
-                        duration: 3,
-                        repeat: state === 'idle' ? Number.POSITIVE_INFINITY : 0,
-                        ease: 'easeInOut',
+                        type: 'spring',
+                        stiffness: 400,
+                        damping: 25,
                     }}
-                >
-                    {/* Outer Ring (The Seeker) */}
-                    {state !== 'text' && (
-                        <motion.div
-                            className="absolute inset-0 rounded-full border-4 border-[#d4af37]"
-                            style={{
-                                filter: 'drop-shadow(0 0 2px rgba(0, 0, 0, 0.5))'
-                            }}
-                            animate={{
-                                opacity: state === 'idle' ? 0.8 : 0.6,
-                            }}
-                        />
-                    )}
-
-                    {/* Inner Dot (Focus state) */}
-                    {state === 'text' && (
-                        <motion.div
-                            className="absolute inset-0 rounded-full bg-[#d4af37]"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{
-                                type: 'spring',
-                                stiffness: 600,
-                                damping: 25,
-                            }}
-                        />
-                    )}
-
-                    {/* God Ray Glow (Potential state for cards) */}
-                    {state === 'card' && (
-                        <motion.div
-                            className="absolute inset-0 rounded-full"
-                            style={{
-                                background:
-                                    'radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0.3) 40%, transparent 70%)',
-                                filter: `blur(${variant.blur}px)`,
-                                width: '100%',
-                                height: '100%',
-                            }}
-                            initial={{ opacity: 0, scale: 0.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{
-                                type: 'spring',
-                                stiffness: 300,
-                                damping: 20,
-                            }}
-                        />
-                    )}
-                </motion.div>
+                />
             </motion.div>
         </>
     )

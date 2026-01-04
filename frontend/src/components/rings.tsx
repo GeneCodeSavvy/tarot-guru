@@ -36,13 +36,13 @@ export function EtherealPortal() {
                     </filter>
 
                     {/* Filter 2: The Glow */}
-                    {/* <filter id="glowFilter"> */}
-                    {/*     <feGaussianBlur stdDeviation="8" result="coloredBlur" /> */}
-                    {/*     <feMerge> */}
-                    {/*         <feMergeNode in="coloredBlur" /> */}
-                    {/*         <feMergeNode in="SourceGraphic" /> */}
-                    {/*     </feMerge> */}
-                    {/* </filter> */}
+                    <filter id="glowFilter">
+                        <feGaussianBlur stdDeviation="8" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
 
                     {/* Gradient: Gold to Transparent for the trails */}
                     <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">

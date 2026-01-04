@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { generateParticle } from '@/lib/utils'
+import { useDevicePreferences } from '@/hooks/use-device-preferences'
 
 interface Particle {
   id: string
@@ -22,6 +23,7 @@ interface CardParticlesProps {
 /**
  * SVG-based particle effect system for card hover interactions
  * Creates rising "dust motes" with gold tint and fade-out animation
+ * Optimized for mobile devices and reduced motion preferences
  */
 export function CardParticles({
   isActive,
@@ -30,6 +32,7 @@ export function CardParticles({
   duration = 2000,
 }: CardParticlesProps) {
   const [particles, setParticles] = useState<Particle[]>([])
+  const { prefersReducedMotion } = useDevicePreferences()
 
   useEffect(() => {
     if (isActive && particles.length === 0) {
@@ -128,11 +131,15 @@ export function CardParticles({
               opacity: [0, particle.opacity * 1.2, particle.opacity, 0],
               x: particle.drift / 10,
             }}
-            transition={{
-              duration: particle.duration,
-              delay: particle.delay,
-              ease: 'easeOut',
-            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0.2 }
+                : {
+                  duration: particle.duration,
+                  delay: particle.delay,
+                  ease: 'easeOut',
+                }
+            }
             style={{
               filter: 'brightness(1.5)',
             }}

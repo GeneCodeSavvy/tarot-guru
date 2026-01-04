@@ -2,6 +2,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import type React from "react"
 import { useRef, useState } from "react"
 import { CardParticles } from "./effects/card-particles"
+import { useDevicePreferences } from "@/hooks/use-device-preferences"
 
 interface InteractiveCardProps {
     imageSrc: string
@@ -14,6 +15,7 @@ const HOVER_PADDING = 0 // pixels inside the card
 export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveCardProps) {
     const ref = useRef<HTMLDivElement>(null)
     const [isHovered, setIsHovered] = useState(false)
+    const { isMobile, prefersReducedMotion } = useDevicePreferences()
 
     const x = useMotionValue(0)
     const y = useMotionValue(0)
@@ -77,7 +79,9 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
                 filter: isHovered
                     ? "drop-shadow(0 20px 40px rgba(212, 175, 55, 0.3))"
                     : "drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5))",
-                transition: { type: "spring", stiffness: 300, damping: 20 },
+                transition: prefersReducedMotion
+                    ? { duration: 0.15 }
+                    : { type: "spring", stiffness: 300, damping: 20 },
             }}
             className={`absolute cursor-pointer transition-shadow duration-500 ${className}`}
             data-card="true"
@@ -128,8 +132,13 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
                     transition={{ duration: 0.3 }}
                 />
 
-                {/* SVG Particle System */}
-                <CardParticles isActive={isHovered} count={12} />
+                {/* SVG Particle System - Optimized for mobile and accessibility */}
+                {!prefersReducedMotion && (
+                    <CardParticles
+                        isActive={isHovered}
+                        count={isMobile ? 3 : 12}
+                    />
+                )}
             </div>
         </motion.div>
     )

@@ -3,10 +3,13 @@ import { InteractiveCard } from "./interactive-card"
 import { DivinationText } from "./ui/divination-text"
 import { GoldLeafButton } from "./ui/gold-leaf-button"
 import { EtherealPortal } from "./rings"
+import { useDevicePreferences } from "@/hooks/use-device-preferences"
 
 const CARD_IMAGE = "/card.webp"
 
 export function Hero() {
+    const { isMobile } = useDevicePreferences()
+
     const handleBeginReading = () => {
         console.log("Draw Your Cards clicked - ready for future implementation")
     }
@@ -57,10 +60,12 @@ export function Hero() {
                 </DivinationText>
 
                 <div className="relative flex items-center justify-center mb-12 w-full">
-                    {/* Portal Background */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-100 max-h-100 md:w-100 md:h-100 z-0 pointer-events-none">
-                        <EtherealPortal />
-                    </div>
+                    {/* Portal Background - Desktop only for performance */}
+                    {!isMobile && (
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-100 max-h-100 md:w-100 md:h-100 z-0 pointer-events-none">
+                            <EtherealPortal />
+                        </div>
+                    )}
 
                     {/* Card Stack */}
                     <div className="relative w-48 h-72 md:w-64 md:h-96 flex items-center justify-center z-10">

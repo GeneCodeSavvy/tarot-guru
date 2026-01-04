@@ -93,7 +93,20 @@ export function InteractiveCard({ imageSrc, className, index = 0 }: InteractiveC
                 className="relative z-10 w-full aspect-[2/3] rounded-2xl overflow-hidden border border-primary/20 shadow-2xl bg-black"
                 style={{ transform: "translateZ(20px)" }}
             >
-                <img src={imageSrc || "/placeholder.svg"} alt="Tarot Card" className="w-full h-full object-cover" />
+                <picture>
+                    <source
+                        srcSet="/card-380.webp 380w, /card-512.webp 512w, /card-768.webp 768w, /card-original.webp 1654w"
+                        sizes="(max-width: 640px) 192px, 256px"
+                        type="image/webp"
+                    />
+                    <img
+                        src={imageSrc || "/placeholder.svg"}
+                        alt="Tarot Card"
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                </picture>
 
                 {/* Existing shine effect */}
                 <motion.div

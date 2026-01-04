@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import { InteractiveCard } from "./interactive-card"
 import { DivinationText } from "./ui/divination-text"
 import { GoldLeafButton } from "./ui/gold-leaf-button"
+import { EtherealPortal } from "./rings"
 
 const CARD_IMAGE = "/card.webp"
 
@@ -16,16 +17,16 @@ export function Hero() {
 
             {/* Background Ambience */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-gold/5 blur-[120px] rounded-full" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] md:w-200 aspect-square bg-gold/5 blur-[80px] md:blur-[120px] rounded-full" />
             </div>
 
-            <div className="container max-w-5xl mx-auto flex flex-col items-center z-10 text-center">
+            <div className="container max-w-5xl mx-auto flex flex-col items-center z-10 text-center px-4">
                 {/* Top Tag */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="flex items-center gap-2 text-primary uppercase tracking-[0.4em] text-[10px] font-bold mb-8"
+                    className="flex items-center gap-2 text-primary uppercase tracking-[0.4em] text-[8px] md:text-[10px] font-bold mb-6 md:mb-8"
                     data-text="true"
                 >
                     <span className="text-primary">★</span>
@@ -38,7 +39,7 @@ export function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground mb-6 tracking-wide leading-tight"
+                    className="font-serif text-4xl md:text-6xl lg:text-8xl text-foreground mb-4 md:mb-6 tracking-wide leading-tight"
                     data-text="true"
                 >
                     CLARITY IN A <br />
@@ -50,17 +51,24 @@ export function Hero() {
                     as="p"
                     delay={400}
                     threshold={0.2}
-                    className="text-muted-foreground text-lg md:text-xl max-w-xl mb-24 font-light tracking-wide"
+                    className="text-muted-foreground text-base md:text-xl max-w-xs md:max-w-xl mb-12 md:mb-24 font-light tracking-wide"
                 >
                     Tarot reading is the ancient wisdom you need
                 </DivinationText>
 
-                {/* Card Stack */}
-                <div className="relative w-64 h-96 flex items-center justify-center">
-                    {/* Multiple cards in a stack that fan out */}
-                    {[-1, 0, 1].map((i) => (
-                        <InteractiveCard key={i} index={i} imageSrc={CARD_IMAGE} className="w-full h-full" />
-                    ))}
+                <div className="relative flex items-center justify-center mb-12 w-full">
+                    {/* Portal Background */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-100 max-h-100 md:w-100 md:h-100 z-0 pointer-events-none">
+                        <EtherealPortal />
+                    </div>
+
+                    {/* Card Stack */}
+                    <div className="relative w-48 h-72 md:w-64 md:h-96 flex items-center justify-center z-10">
+                        {/* Multiple cards in a stack that fan out */}
+                        {[-1, 0, 1, 2].map((i) => (
+                            <InteractiveCard key={i} index={i} imageSrc={CARD_IMAGE} className="w-full h-full" />
+                        ))}
+                    </div>
                 </div>
 
                 {/* Call to Action Button */}
@@ -85,6 +93,6 @@ export function Hero() {
                     <div className="w-px h-32 bg-linear-to-b from-primary/40 to-transparent mx-auto" />
                 </motion.div>
             </div>
-        </section>
+        </section >
     )
 }

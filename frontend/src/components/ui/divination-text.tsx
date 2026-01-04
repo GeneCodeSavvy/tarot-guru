@@ -67,7 +67,7 @@ export function DivinationText({
       data-text="true"
     >
       <motion.span
-        className="inline-block"
+        className="inline-block mb-12"
         initial={reducedMotion ? {} : { color: '#d4af37' }}
         animate={
           reducedMotion

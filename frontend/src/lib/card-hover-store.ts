@@ -1,5 +1,4 @@
-import { motionValue } from "framer-motion"
-import type { MotionValue } from "framer-motion"
+import { motionValue, type MotionValue } from "framer-motion"
 
 // Singleton store - lives outside React lifecycle
 const cardHoverStore = new Map<number, MotionValue<boolean>>()

@@ -45,19 +45,6 @@ export function TorchlightCursor({ children }: TorchlightCursorProps) {
         }
     }, [cursorData, cursorX, cursorY])
 
-    // Add custom cursor class to body for desktop
-    useEffect(() => {
-        if (cursorData?.isDesktop) {
-            document.body.classList.add('custom-cursor-active')
-        } else {
-            document.body.classList.remove('custom-cursor-active')
-        }
-
-        return () => {
-            document.body.classList.remove('custom-cursor-active')
-        }
-    }, [cursorData?.isDesktop])
-
     // Don't render cursor on mobile or during SSR
     if (!mounted || !cursorData) {
         return <>{children}</>

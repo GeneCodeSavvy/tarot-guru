@@ -1,6 +1,15 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent } from "framer-motion";
+import { useState } from "react";
+import { getAnyCardHoveredValue } from "@/lib/card-hover-store";
 
 export function EtherealPortal() {
+    const [isAnyCardHovered, setIsAnyCardHovered] = useState(false);
+    
+    // Subscribe to global card hover state
+    useMotionValueEvent(getAnyCardHoveredValue(), "change", (latest) => {
+        setIsAnyCardHovered(latest);
+    });
+
     return (
         <div className="relative flex items-center justify-center w-auto h-auto">
             {/* 
@@ -44,12 +53,24 @@ export function EtherealPortal() {
                         </feMerge>
                     </filter>
 
-                    {/* Gradient: Gold to Transparent for the trails */}
-                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#F59E0B" stopOpacity="0" />
-                        <stop offset="50%" stopColor="#FCD34D" stopOpacity="1" />
-                        <stop offset="100%" stopColor="#FFFBEB" stopOpacity="0" />
-                    </linearGradient>
+                    {/* Filter 3: Gold Glow (activated on card hover) */}
+                    <filter id="purpleGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                        <feColorMatrix
+                            type="matrix"
+                            values="0.831 0 0 0 0
+                                    0 0.686 0 0 0
+                                    0 0 0.216 0 0
+                                    0 0 0 1 0"
+                            result="gold"
+                        />
+                        <feGaussianBlur stdDeviation="12" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+
                 </defs>
 
                 {/* 
@@ -76,7 +97,7 @@ export function EtherealPortal() {
                             key={i}
                             cx="200"
                             cy="200"
-                            r={arc.r - 50}
+                            r={arc.r - 40}
                             stroke="#9D845E"
                             strokeWidth={40}
                             fill="transparent"
@@ -98,42 +119,33 @@ export function EtherealPortal() {
                     ))}
                 </motion.g>
 
-                {/* LAYER 2: The Main Gold Portal (Bright, defined) */}
-                <motion.circle
-                    cx="200"
-                    cy="200"
-                    r="200"
-                    stroke="url(#goldGradient)"
-                    strokeWidth="4"
-                    fill="transparent"
-                    filter="url(#glowFilter)"
-                    strokeLinecap="round"
-                    initial={{ rotate: 0 }}
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                />
-
-                {/* LAYER 3: The "Broken" Particles (Fast, wispy details) */}
-                {/* <motion.circle */}
-                {/*     cx="200" */}
-                {/*     cy="200" */}
-                {/*     r="135" */}
-                {/*     stroke="#FEF3C7" */}
-                {/*     strokeWidth="2" */}
-                {/*     fill="transparent" */}
-                {/*     strokeDasharray="10 40 20 60" */}
-                {/*     filter="url(#wispyFilter)" */}
-                {/*     opacity="0.6" */}
-                {/*     animate={{ rotate: 360, scale: [1, 1.05, 1] }} */}
-                {/*     transition={{ */}
-                {/*         rotate: { duration: 30, repeat: Infinity, ease: "linear" }, */}
-                {/*         scale: { duration: 5, repeat: Infinity, ease: "easeInOut" } */}
-                {/*     }} */}
-                {/* /> */}
+                {/* LAYER 2: Rune with Smoke Effect */}
+                <g>
+                    <image
+                        href="/rune.png"
+                        x="-400"
+                        y="-400"
+                        width="1200"
+                        height="1200"
+                        opacity="0.9"
+                        style={{ 
+                            mixBlendMode: 'screen',
+                            filter: isAnyCardHovered 
+                                ? 'url(#purpleGlowFilter)' 
+                                : 'none',
+                            transition: 'filter 0.5s ease-in-out'
+                        }}
+                    />
+                    <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 200 200"
+                        to="360 200 200"
+                        dur="60s"
+                        repeatCount="indefinite"
+                    />
+                </g>
             </svg>
-
-            {/* Optional: Center Glow Overlay (CSS) to enhance depth */}
-            <div className="absolute inset-0 bg-amber-500/10 blur-3xl rounded-full pointer-events-none mix-blend-screen" />
         </div>
     );
 };

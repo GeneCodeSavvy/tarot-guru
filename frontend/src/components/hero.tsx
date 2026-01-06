@@ -69,7 +69,6 @@ export function Hero() {
 
                     {/* Card Stack */}
                     <div className="relative w-48 h-72 md:w-64 md:h-96 flex items-center justify-center z-10">
-                        {/* Multiple cards in a stack that fan out, with pseudo cards at edges */}
                         {[-2, -1, 0, 1, 2, 3 ].map((i) => (
                             <InteractiveCard 
                                 key={i} 

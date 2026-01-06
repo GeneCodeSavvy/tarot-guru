@@ -1,9 +1,36 @@
 import { motion, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getAnyCardHoveredValue } from "@/lib/card-hover-store";
 
 export function EtherealPortal() {
     const [isAnyCardHovered, setIsAnyCardHovered] = useState(false);
+    
+    // Dynamic Rune Image Logic
+    const getRuneImage = () => {
+        if (typeof window === 'undefined') return '/rune-1200.webp';
+        
+        const width = window.innerWidth;
+        const dpr = window.devicePixelRatio || 1;
+        
+        if (width <= 640) return '/rune-480.webp';
+        if (width <= 768) return '/rune-768.webp';
+        if (width <= 1024 || dpr < 2) return '/rune-1200.webp';
+        return '/rune-1600.webp';
+    };
+
+    const [runeImage, setRuneImage] = useState('/rune-1200.webp');
+    const [imageError, setImageError] = useState(false);
+
+    useEffect(() => {
+        setRuneImage(getRuneImage());
+
+        const handleResize = () => {
+             setRuneImage(getRuneImage());
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     
     // Subscribe to global card hover state
     useMotionValueEvent(getAnyCardHoveredValue(), "change", (latest) => {
@@ -122,7 +149,8 @@ export function EtherealPortal() {
                 {/* LAYER 2: Rune with Smoke Effect */}
                 <g>
                     <image
-                        href="/rune.png"
+                        href={imageError ? "/rune.png" : runeImage}
+                        onError={() => setImageError(true)}
                         x="-400"
                         y="-400"
                         width="1200"
